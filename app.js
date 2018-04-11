@@ -6,6 +6,7 @@ const cors = require('cors');
 const path = require('path');
 // Set up the express app
 const app = express();
+
 app.use(cors())
 
 // Log requests to the console.

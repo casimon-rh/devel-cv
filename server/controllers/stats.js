@@ -7,7 +7,7 @@ let transaction = [];
 let promises = [];
 let langlist = [];
 
-const languagesPromise = (url) =>
+const languagesPromise = (url, socket) =>
     new Promise((resolve, reject) => {
         var urlSplit = url.split('//');
         var authUrl = urlSplit[0] + '//' + `${conf.username}:${conf.token}@` + urlSplit[1];
@@ -18,6 +18,7 @@ const languagesPromise = (url) =>
                     'User-Agent': 'request'
                 },
             }).then((body) => {
+                socket.emit('progress', `rping ${url}`);
                 resolve(body);
             })
             .catch((err) => {
@@ -25,29 +26,31 @@ const languagesPromise = (url) =>
                 reject(err);
             });
     });
-const DeleteStatPromise = (statId) => new Promise((resolve, reject) => {
+const DeleteStatPromise = (statId, socket) => new Promise((resolve, reject) => {
     Stats.findById(statId).then(currentStat => {
         if (currentStat) {
             currentStat.destroy().then(() => {
+                socket.emit('progress', `destroying ${statId}`);
                 console.log(`destroying ${statId}`);
                 resolve()
             }).catch(error => console.log(error.stack));
         }
     })
 });
-const UpdateStatPromise = (statId, newStat) => new Promise((resolve, reject) => {
+const UpdateStatPromise = (statId, newStat, socket) => new Promise((resolve, reject) => {
     Stats.findById(statId).then(currentStat => {
         if (currentStat) {
             currentStat.update({
                 percentage: newStat
             }).then(() => {
+                socket.emit('progress', `updating ${statId}`);
                 console.log(`updating ${statId}`);
                 resolve()
             }).catch(error => console.log(error.stack));;
         }
     })
 });
-const InsertStatPromise = (newLang, newStat, type) => new Promise((resolve, reject) => {
+const InsertStatPromise = (newLang, newStat, type, socket) => new Promise((resolve, reject) => {
     Source.findAll({
         where: {
             name: type
@@ -61,6 +64,7 @@ const InsertStatPromise = (newLang, newStat, type) => new Promise((resolve, reje
                     percentage: newStat,
                     sourceId: githubSource.id
                 }).then(() => {
+                    socket.emit('progress', `inserting ${newLang}`);
                     console.log(`inserting ${newLang}`);
                     resolve()
                 }).catch(error => console.log(error.stack));
@@ -70,7 +74,7 @@ const InsertStatPromise = (newLang, newStat, type) => new Promise((resolve, reje
 });
 
 module.exports = {
-    syncGithub(req, res) {
+    syncGithub(socket) {
         rp({
             uri: `https://${conf.username}:${conf.token}@api.github.com/user/repos?affiliation=owner&visibility=all&per_page=100`,
             json: true,
@@ -81,7 +85,7 @@ module.exports = {
         }).then((body) => {
             promises = [];
             body.forEach(repo => {
-                promises.push((languagesPromise(repo.languages_url)));
+                promises.push((languagesPromise(repo.languages_url, socket)));
             });
             var langs = [];
             Promise.all(promises).then((results) => {
@@ -119,43 +123,33 @@ module.exports = {
                         transaction = [];
                         StatsList.forEach(stat => {
                             if (stat.lang in langs) {
-                                transaction.push(UpdateStatPromise(stat.id, langs[stat.lang]));
+                                transaction.push(UpdateStatPromise(stat.id, langs[stat.lang], socket));
                             } else {
-                                transaction.push(DeleteStatPromise(stat.id));
+                                transaction.push(DeleteStatPromise(stat.id, socket));
                             }
                         });
                         Object.keys(langs).forEach(lang => {
                             if (StatsList.filter(x => x.lang === lang).length === 0) {
-                                transaction.push(InsertStatPromise(lang, langs[lang], 'Github'));
+                                transaction.push(InsertStatPromise(lang, langs[lang], 'Github', socket));
                             }
                         });
                         Promise.all(transaction).then(() => {
-                            return res.status(200).send({
-                                message: "OK"
-                            });
+                            return socket.emit('progress', 'END');
                         }).catch((error) => {
                             console.error(error.stack);
-                            return res.status(500).send({
-                                message: "Unexpected error."
-                            });
+                            return socket.emit('error', 'ERROR');
                         });
                     }).catch((error) => {
                         console.error(error.stack);
-                        return res.status(500).send({
-                            message: "Unexpected error."
-                        });
+                        return socket.emit('error', 'ERROR');
                     });
             }).catch((error) => {
                 console.error(error.stack);
-                return res.status(500).send({
-                    message: "Unexpected error."
-                });
+                return socket.emit('progress', 'END');
             });
         }).catch((error) => {
             console.error(error.stack);
-            return res.status(500).send({
-                message: "Unexpected error."
-            });
+            return socket.emit('error', 'ERROR');
         });;
     },
     listGithub(req, res) {
@@ -193,7 +187,7 @@ module.exports = {
                 });
             });
     },
-    syncWaka(req, res) {
+    syncWaka(socket) {
         rp({
             uri: `https://wakatime.com/api/v1/users/${conf.username}/stats/last_7_days?api_key=${conf.key}`,
             json: true,
@@ -220,37 +214,32 @@ module.exports = {
                     transaction = [];
                     StatsList.forEach(stat => {
                         if (stat.lang in langs) {
-                            transaction.push(UpdateStatPromise(stat.id, langs[stat.lang]));
+                            transaction.push(UpdateStatPromise(stat.id, langs[stat.lang], socket));
                         } else {
-                            transaction.push(DeleteStatPromise(stat.id));
+                            transaction.push(DeleteStatPromise(stat.id, socket));
                         }
                     });
                     Object.keys(langs).forEach(lang => {
                         if (StatsList.filter(x => x.lang === lang).length === 0) {
-                            transaction.push(InsertStatPromise(lang, langs[lang], 'Waka'));
+                            transaction.push(InsertStatPromise(lang, langs[lang], 'Waka', socket));
                         }
                     });
                     Promise.all(transaction).then(() => {
-                        return res.status(200).send({
-                            message: "OK"
-                        });
+                        return socket.emit('progress', 'END');
                     }).catch((error) => {
                         console.error(error.stack);
-                        return res.status(500).send({
-                            message: "Unexpected error."
-                        });
+                        return socket.emit('progress', 'END');
+
                     });
                 }).catch((error) => {
                     console.error(error.stack);
-                    return res.status(500).send({
-                        message: "Unexpected error."
-                    });
+                    return socket.emit('progress', 'END');
+
                 });
         }).catch((error) => {
             console.error(error.stack);
-            return res.status(500).send({
-                message: "Unexpected error."
-            });
+            return socket.emit('progress', 'END');
+
         });;
     },
     listWaka(req, res) {
