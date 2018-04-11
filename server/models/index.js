@@ -9,10 +9,22 @@ const db = {};
 let sequelize;
 if (config.use_env_variable) {
   //todo if not env
-  sequelize = new Sequelize(process.env[config.use_env_variable]);
+  sequelize = new Sequelize(process.env[config.use_env_variable], {
+    pool: {
+      max: 10,
+      min: 1,
+      idle: 10000
+    }
+  });
 } else {
   sequelize = new Sequelize(
-    config.database, config.username, config.password, config
+    config.database, config.username, config.password, config, {
+      pool: {
+        max: 10,
+        min: 1,
+        idle: 10000
+      }
+    }
   );
 }
 
