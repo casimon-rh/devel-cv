@@ -19,7 +19,9 @@ class Page extends React.Component{
         <div>
             <h1> Graphs </h1>
             <Grafica data={this.props.state.githubData} title="Github"/>
-            <Grafica data={this.props.state.wakaData} title="Waka Time (ultimos 7 dias)"/>
+            <Grafica data={this.props.state.wakaData} title="Waka Time (Last 7 days)"/>
+            <p>Source code at: <a href="https://github.com/darknesstiller/devel-cv">Github</a></p>
+            <p>Author: <a href="https://github.com/darknesstiller">@darknesstiller</a></p>
         </div>
         );
     }
