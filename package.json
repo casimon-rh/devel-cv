@@ -1,0 +1,45 @@
+{
+  "name": "devel-cv",
+  "version": "1.0.0",
+  "description": "Curriculum Vitae",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "debug": "nodemon --inspect ./bin/www",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darknesstiller/devel-cv.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "nodejs",
+    "express",
+    "sequelize",
+    "postgresql",
+    "plotly"
+  ],
+  "author": "darknesstiller",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/darknesstiller/devel-cv/issues"
+  },
+  "homepage": "https://github.com/darknesstiller/devel-cv#readme",
+  "dependencies": {
+    "babel-eslint": "^8.2.2",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "eslint": "^4.19.1",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.3",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
+    "plotly.js": "^1.35.2",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "sequelize": "^4.37.6"
+  }
+}
