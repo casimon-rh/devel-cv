@@ -276,5 +276,40 @@ module.exports = {
                     message: "Unexpected error."
                 });
             });
+    },
+    listKnowledge(req, res) {
+        return Stats
+            .findAll({
+                include: [{
+                    model: Source,
+                }],
+                where: {
+                    'sourceId': '3'
+                }
+            }).then((StatsList) => {
+                if (!StatsList) {
+                    return res.status(404).send({
+                        message: "Not found."
+                    });
+                }
+                var resultados = [];
+                var sum = 0;
+                StatsList.forEach(stat => {
+                    resultados.push({
+                        lang: stat.lang,
+                        percentage: stat.percentage
+                    })
+                    sum += stat.percentage;
+                });
+                console.log(sum);
+                return res.status(200).send({
+                    resultados
+                });
+            }).catch((error) => {
+                console.error(error.stack);
+                return res.status(500).send({
+                    message: "Unexpected error."
+                });
+            });
     }
 }

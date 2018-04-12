@@ -1,4 +1,3 @@
 var config = {};
-config.apibaseurl = process.env.BASE_URL||"http://localhost:3000/api/";
-console.log('config.apibaseurl',config.apibaseurl);
+config.apibaseurl = process.env.BASE_URL||"http://localhost:3001/api/";
 module.exports =  config;
