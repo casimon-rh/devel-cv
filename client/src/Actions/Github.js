@@ -1,4 +1,3 @@
-import rp from 'request-promise';
 import xhr from 'xhr';
 import conf from '../conf';
 
