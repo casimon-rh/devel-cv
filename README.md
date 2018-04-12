@@ -1,4 +1,5 @@
 # devel-cv
+
 > React-Redux + Express-Sequelize + socket.io + Psql app, shows curriculum vitae online
 
 ## Todos
@@ -6,6 +7,7 @@
 * timeline menu
 * relevant data
 * download pdf button
+* transactions
 
 ## Features
 
@@ -13,4 +15,5 @@
 * web socket to sync data
 
 ## Deployed at
+
 [Heroku](https://csi-cv.herokuapp.com)
