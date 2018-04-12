@@ -1,7 +1,8 @@
 const initialState = {
     githubData: [],
-    wakaData: []
-}
+    wakaData: [],
+    knowledgeData:[]
+};
 
 export const mainReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -10,11 +11,16 @@ export const mainReducer = (state = initialState, action) => {
                 ...state,
                 githubData: action.githubData
             };
-            case 'FETCH_WAKA':
-                return {
-                    ...state,
-                    wakaData: action.wakaData
-                };
+        case 'FETCH_WAKA':
+            return {
+                ...state,
+                wakaData: action.wakaData
+            };
+        case 'FETCH_KNOWLEDGE':
+            return {
+                ...state,
+                knowledgeData: action.knowledgeData
+            };
         default:
             return state;
     }

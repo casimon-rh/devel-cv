@@ -4,4 +4,5 @@ module.exports = (app) =>{
     // app.get('/api/syncWaka',statsController.syncWaka);
     app.get('/api/listGithub',statsController.listGithub);
     app.get('/api/listWaka',statsController.listWaka);
+    app.get('/api/listKnowledge',statsController.listKnowledge);
 }

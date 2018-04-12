@@ -1,4 +1,3 @@
-import rp from 'request-promise';
 import xhr from 'xhr';
 import conf from '../conf';
 
@@ -21,14 +20,12 @@ export const fetchWaka = () => {
             url: `${conf.apibaseurl}listWaka`
         }, (err, resp, body) => {
             var langs = JSON.parse(body);
-            var sum = 0;
             var x = [];
             var y = [];
             langs.resultados.forEach(langu => {
                 if (langu.percentage > 1) {
                     x.push(langu.lang);
                     y.push(langu.percentage);
-                    sum += langu.percentage;
                 }
             });
             var data = [{
