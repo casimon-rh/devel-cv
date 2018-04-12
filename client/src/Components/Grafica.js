@@ -8,8 +8,12 @@ class Grafica extends React.Component {
                 layout = {{
                         title: this.props.title,
                         xaxis: {
+<<<<<<< HEAD
                             showticklabels: false,
                             hovermode:'closest'
+=======
+                            showticklabels: false
+>>>>>>> be0ce7fd615a2977f4949233f60bfcbca88eefc2
                         }
                     }}
                 />);
