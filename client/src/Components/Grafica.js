@@ -8,9 +8,9 @@ class Grafica extends React.Component {
                 layout = {{
                         title: this.props.title,
                         xaxis: {
-                            showticklabels: false
-                        },
-                        hovermode:'closest'
+                            showticklabels: false,
+                            hovermode:'closest'
+                        }
                     }}
                 />);
             }

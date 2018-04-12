@@ -1,3 +1,3 @@
 var config = {};
-config.apibaseurl = process.env.BASE_URL||"http://localhost:3001/api/";
+config.apibaseurl = "http://csi-cv.herokuapp.com/api/";
 module.exports =  config;
