@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {});
-  Source.associate = function (models) {
+  Source.associate = (models)=> {
     Source.hasMany(models.Stats,{
       foreignKey:'sourceId',
       as: 'sourceStats'

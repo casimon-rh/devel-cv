@@ -1,3 +1,3 @@
 var config = {};
-config.apibaseurl = "https://csi-cv.herokuapp.com/api/";
-module.exports =  config;
+config.apibaseurl = "http://localhost:3001/api/";
+export default config;

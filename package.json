@@ -6,8 +6,10 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "debug": "nodemon --inspect ./bin/www",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "heroku-prebuild": "npm i -g sequelize sequelize-cli pg pg-hstore",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build && sequelize db:migrate"
   },
+  "cacheDirectories": ["node_modules", "client/node_modules"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/darknesstiller/devel-cv.git"

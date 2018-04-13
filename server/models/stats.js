@@ -7,9 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     percentage: {
       type: DataTypes.FLOAT,
       allowNull: false
-    }
+    },
+    sourceId:DataTypes.INT,
   }, {});
-  Stats.associate = function (models) {
+  Stats.associate = (models) => {
     Stats.belongsTo(models.Source, {
       foreignKey: 'sourceId'
     });
