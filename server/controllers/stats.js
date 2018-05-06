@@ -1,6 +1,6 @@
-import rp from "request-promise";
-import conf from "../../conf";
-import { Stats,Source } from "../models";
+const rp = require("request-promise");
+const conf = require("../../conf");
+const { Stats, Source } = require( "../models");
 
 let transaction = [];
 let promises = [];
@@ -11,15 +11,15 @@ const languagesPromise = (url, socket) =>
         var urlSplit = url.split('//');
         var authUrl = urlSplit[0] + '//' + `${conf.username}:${conf.token}@` + urlSplit[1];
         rp({
-                uri: authUrl,
-                json: true,
-                headers: {
-                    'User-Agent': 'request'
-                },
-            }).then((body) => {
-                socket.emit('progress', `rping ${url}`);
-                resolve(body);
-            })
+            uri: authUrl,
+            json: true,
+            headers: {
+                'User-Agent': 'request'
+            },
+        }).then((body) => {
+            socket.emit('progress', `rping ${url}`);
+            resolve(body);
+        })
             .catch((err) => {
                 console.log('err', err);
                 reject(err);
@@ -72,7 +72,7 @@ const InsertStatPromise = (newLang, newStat, type, socket) => new Promise((resol
     });
 });
 
-export function syncGithub(socket) {
+module.exports ={ syncGithub(socket) {
     rp({
         uri: `https://${conf.username}:${conf.token}@api.github.com/user/repos?affiliation=owner&visibility=all&per_page=100`,
         json: true,
@@ -151,8 +151,8 @@ export function syncGithub(socket) {
         return socket.emit('error', 'ERROR');
     });
     ;
-}
-export function listGithub(req, res) {
+},
+listGithub(req, res) {
     return Stats
         .findAll({
             include: [{
@@ -186,8 +186,7 @@ export function listGithub(req, res) {
                 message: "Unexpected error."
             });
         });
-}
-export function syncWaka(socket) {
+},syncWaka(socket) {
     rp({
         uri: `https://wakatime.com/api/v1/users/${conf.username}/stats/last_7_days?api_key=${conf.key}`,
         json: true,
@@ -240,8 +239,7 @@ export function syncWaka(socket) {
         return socket.emit('progress', 'END');
     });
     ;
-}
-export function listWaka(req, res) {
+}, listWaka(req, res) {
     return Stats
         .findAll({
             include: [{
@@ -275,8 +273,7 @@ export function listWaka(req, res) {
                 message: "Unexpected error."
             });
         });
-}
-export function listKnowledge(req, res) {
+}, listKnowledge(req, res) {
     return Stats
         .findAll({
             include: [{
@@ -310,4 +307,4 @@ export function listKnowledge(req, res) {
                 message: "Unexpected error."
             });
         });
-}
+}};

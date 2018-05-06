@@ -7,4 +7,4 @@ if(!config.username || !config.token || !config.key){
     console.error('Revisar ENVS');
     process.exit(1);
 }
-export default config;
+module.exports = config;

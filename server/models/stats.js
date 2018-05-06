@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false
     },
-    sourceId:DataTypes.INT,
+    sourceId:DataTypes.INTEGER,
   }, {});
   Stats.associate = (models) => {
     Stats.belongsTo(models.Source, {

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     img: DataTypes.STRING
   }, {});
   Category.associate = (models) => {
-    Category.hasMany(models.Informations,{
+    Category.hasMany(models.Information,{
       foreignKey:'categoryId',
       as: 'categoryInformation'
     });

@@ -1,6 +1,6 @@
 import { Category,Information } from "../models";
 
-export function information(req,res){
+module.exports={ information(req,res){
     return Category.findAll({
         include:[{model:Category}]
     }).then((Categories)=>{
@@ -9,4 +9,5 @@ export function information(req,res){
         }
           
     })
+}
 }

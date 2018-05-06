@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: DataTypes.STRING,
     img: DataTypes.STRING,
-    categoryId: DataTypes.INT
+    categoryId: DataTypes.INTEGER
   }, {});
   Information.associate = (models) => {
-    Information.belongsTo(models.Categories,{
+    Information.belongsTo(models.Category,{
       foreignKey:'categoryId'
     })
   };
