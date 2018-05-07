@@ -10,7 +10,15 @@ class Grafica extends React.Component {
                         xaxis: {
                             showticklabels: false,
                             hovermode:'closest'
+                        },
+                        paper_bgcolor:'rgba(0,0,0,0)',
+                        plot_bgcolor:'rgba(0,0,0,0)',
+                        font:{
+                            family:'Courier New, monospace', 
+                            size:16, 
+                            color:'#7f7f7f'
                         }
+                        
                     }}
                 />);
             }
