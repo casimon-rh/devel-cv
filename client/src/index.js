@@ -9,6 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 //const store = createStore(todos);
 import { mainReducer } from './Reducers/Main';
 import Page from './Components/Page';
+import './App.css';
 
 var store = createStore(
     mainReducer,

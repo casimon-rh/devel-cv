@@ -1,7 +1,8 @@
 const initialState = {
     githubData: [],
     wakaData: [],
-    knowledgeData:[]
+    knowledgeData: [],
+    currentPage: 'GRAPH'
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -20,6 +21,11 @@ export const mainReducer = (state = initialState, action) => {
             return {
                 ...state,
                 knowledgeData: action.knowledgeData
+            };
+        case 'CHANGE_CURRENT':
+            return {
+                ...state,
+                currentPage: action.selected
             };
         default:
             return state;
